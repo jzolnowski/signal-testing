@@ -1,0 +1,28 @@
+.mat-mdc-card {
+  .mat-mdc-card-header {
+    padding: 16px;
+  }
+
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+
+    .mat-mdc-progress-spinner {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .empty-table {
+    text-align: center;
+
+    td {
+      padding: 12px;
+    }
+  }
+}
