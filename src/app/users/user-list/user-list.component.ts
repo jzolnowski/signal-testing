@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component, inject, effect, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { User } from '../user';
 import { UsersService } from '../users.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-list',
@@ -15,17 +16,15 @@ import { UsersService } from '../users.service';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss',
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   private readonly usersService = inject(UsersService);
   readonly dataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   readonly displayedColumns: string[] = ['id', 'username', 'email'];
   readonly isLoading = this.usersService.isLoading;
-  users = this.usersService.getUsers();
+  users: User[] = [];
 
-  constructor() {
-    effect(() => {
-      console.log('this.users() effect', this.users());
-      this.dataSource.data = this.users();
-    });
+  async ngOnInit(): Promise<void> {
+    this.users = await lastValueFrom(this.usersService.getUsers());
+    this.dataSource.data = this.users;
   }
 }
